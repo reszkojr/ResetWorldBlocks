@@ -1,5 +1,6 @@
 package commands;
 
+import events.BrokenBlocksEvent;
 import events.PlacedBlocksEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -19,12 +20,20 @@ public class ResetBlocksCommand implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("resetblocks")) {
 
             Set<Location> placedBlocks = PlacedBlocksEvent.locationSet();
+	        Map<Location, Material> brokenBlocks = BrokenBlocksEvent.locationAndMaterialMap();
 
             for (Location location : placedBlocks) {
                 Block block = location.getBlock();
                 block.setType(Material.AIR);
             }
-
+            
+            for (Map.Entry<Location, Material> pair : brokenBlocks.entrySet()) {
+                Location blockLocation = pair.getKey();
+                Material blockMaterial = pair.getValue();
+                blockLocation.getBlock().setType(blockMaterial);
+            }
+	 	
+            brokenBlocks.clear(); 	
             placedBlocks.clear();
             return true;
         }

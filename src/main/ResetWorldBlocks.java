@@ -16,6 +16,7 @@ public class ResetWorldBlocks extends JavaPlugin {
         sendConsoleMessage(ChatColor.GREEN + "ResetBlocks enabled!");
         registerCommands("resetblocks", new ResetBlocksCommand());
         registerEvents(new PlacedBlocksEvent(), this);
+        registerEvents(new BrokenBlocksEvent(), this);
     }
 
     @Override
